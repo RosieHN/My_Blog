@@ -1,0 +1,168 @@
+---
+import Container from "@/components/Container.astro";
+import Layout from "@/layouts/Layout.astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import { format } from "date-fns";
+import "katex/dist/katex.min.css";
+import EditOnGithub from "../../../components/EditOnGithub.astro";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("reading")).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<"reading">;
+
+const posts = (await getCollection("reading")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+function getNextPost() {
+  let postIndex;
+  for (const post of posts) {
+    if (post.id === Astro.params.id) {
+      postIndex = posts.indexOf(post);
+      return posts[postIndex + 1];
+    }
+  }
+}
+
+function getPrevPost() {
+  let postIndex;
+  for (const post of posts) {
+    if (post.id === Astro.params.id) {
+      postIndex = posts.indexOf(post);
+      return posts[postIndex - 1];
+    }
+  }
+}
+
+const nextPost = getNextPost();
+const prevPost = getPrevPost();
+
+const post = Astro.props;
+const { Content, remarkPluginFrontmatter } = await render(post);
+
+let slug = Array.isArray(Astro.params.id)
+  ? Astro.params.id[0]
+  : Astro.params.id;
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  image={`/blog/${post.id}/og.png`}
+>
+  <!-- Import Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <Container>
+    <section class="py-8" style="font-family: 'Lora', serif;">
+      {
+        post.data.draft && (
+          <div class="mb-8 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-yellow-500">
+            <p class="text-sm font-medium">
+              ⚠️ This is a draft post. It may be incomplete or contain incorrect information.
+            </p>
+          </div>
+        )
+      }
+      <div class="mb-10 space-y-2">
+        <h1
+          class="text-5xl sm:text-6xl font-bold tracking-tight border-b-2 border-zinc-800 pb-2"
+          style="background: linear-gradient(to right, #6b7280,rgb(126, 99, 116),rgb(95, 110, 139),rgb(59, 66, 66)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+        >
+          {post.data.title}
+        </h1>
+        <div class="flex flex-col md:flex-row gap-2 md:items-center">
+          <div class="flex items-center gap-1.5">
+            <time
+              datetime={post.data.date.toISOString()}
+              title={post.data.date.toISOString()}
+              class="text-sm text-zinc-700"
+            >
+              {format(new Date(post.data.date), "dd MMMM yyyy")}
+            </time>
+            <span class="text-sm text-zinc-700">•</span>
+            {
+              post.body && (
+                <div class="text-sm text-zinc-700">
+                  {remarkPluginFrontmatter.minutesRead}
+                </div>
+              )
+            }
+          </div>
+          <div>
+            {
+              remarkPluginFrontmatter.lastModified && (
+                <span class="inline-flex items-center rounded-md bg-zinc-800/10 px-2 py-1 text-xs font-medium text-zinc-700">
+                  Updated: {" "}
+                  {format(
+                    new Date(remarkPluginFrontmatter.lastModified),
+                    "dd MMM yyyy"
+                  )}
+                </span>
+              )
+            }
+          </div>
+        </div>
+
+        {
+          post.data.tags && post.data.tags?.length > 0 ? (
+            <div class="flex gap-2 pt-2">
+              {post.data.tags.map((tag) => (
+                <a
+                  href={`/tags/${tag}`}
+                  class="rounded-sm border px-2 py-1 text-sm font-medium text-zinc-800 transition-colors duration-300 ease-in-out"
+                  style="border-image: linear-gradient(to right, #6b7280, #8b5cf6, #3b82f6, #10b981) 1;"
+                >
+                  {tag}
+                </a>
+              ))}
+            </div>
+          ) : null
+        }
+      </div>
+      <article class="prose prose-img:mx-auto max-w-none prose-invert prose-h2:text-xl prose-h2:font-bold prose-h2:text-zinc-800 prose-h2:mt-6 prose-h3:text-lg prose-h3:font-medium prose-h3:text-zinc-800 prose-h4:text-lg prose-h4:font-medium prose-h4:text-zinc-800 prose-p:text-zinc-800 prose-p:leading-relaxed prose-p:mb-6 prose-ul:pl-6 prose-ul:text-zinc-800 prose-ul:leading-relaxed prose-li:mb-2 prose-a:text-zinc-900 prose-a:hover:text-purple-600 prose-blockquote:text-zinc-800 prose-strong:text-zinc-900">
+        <Content />
+      </article>
+
+      <EditOnGithub slug={slug} />
+
+      <nav class="my-10 flex flex-col gap-4 border-t border-zinc-700/50 pt-8">
+        {
+          prevPost && (
+            <a
+              href={`/blog/${prevPost.id}`}
+              class="group relative border border-zinc-700/50 p-4 rounded-lg transition-colors hover:bg-zinc-800/10 hover:border-purple-600"
+            >
+              <div class="mb-2 text-sm text-zinc-700">← Previous Article</div>
+              <div class="line-clamp-2 font-medium text-zinc-800 group-hover:text-purple-600">
+                {prevPost.data.title}
+              </div>
+            </a>
+          )
+        }
+
+        {
+          nextPost && (
+            <a
+              href={`/blog/${nextPost.id}`}
+              class="group relative border border-zinc-700/50 p-4 rounded-lg transition-colors hover:bg-zinc-800/10 hover:border-purple-600"
+            >
+              <div class="mb-2 text-sm text-zinc-700">Next Article →</div>
+              <div class="line-clamp-2 font-medium text-zinc-800 group-hover:text-purple-600">
+                {nextPost.data.title}
+              </div>
+            </a>
+          )
+        }
+      </nav>
+    </section>
+  </Container>
+</Layout>

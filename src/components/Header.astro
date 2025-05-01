@@ -1,0 +1,16 @@
+---
+import Container from "./Container.astro";
+---
+
+<header transition:persist>
+  <Container>
+    <div class="py-8">
+      <nav class="space-x-10 text-lg sm:text-xl pl-6">
+        <a href="/" class="text-zinc-700 hover:text-purple-500 font-medium">Home</a>
+        <a href="/blog" class="text-zinc-700 hover:text-green-500 font-medium">Blog</a>
+        <a href="/reading" class="text-zinc-700 hover:text-blue-500 font-medium">Reading</a>
+        <a href="/music" class="text-zinc-700 hover:text-red-500 font-medium">Music</a>
+      </nav>
+    </div>
+  </Container>
+</header>

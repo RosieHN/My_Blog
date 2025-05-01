@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-genos: "Genos Variable", sans-serif;
+}
+
+html {
+  scrollbar-gutter: stable both-edges;
+}
+
+body {
+  font-family: "Lexend Variable", sans-serif;
+}
+
+@layer components {
+  .gradient-text {
+    @apply font-genos bg-gradient-to-b from-white via-white to-transparent text-transparent bg-clip-text;
+  }
+}

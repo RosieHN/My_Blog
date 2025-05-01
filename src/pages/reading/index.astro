@@ -1,0 +1,133 @@
+---
+import Container from "@/components/Container.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { format } from "date-fns";
+
+const blog = (await getCollection("reading")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const postsByYear = blog.reduce(
+  (acc, post) => {
+    const year = new Date(post.data.date).getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof blog>
+);
+
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+<Layout title="Reading" description="A list of books I've read and recommend.">
+  <!-- Import Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <Container>
+    <section class="prose max-w-none prose-invert py-8" style="font-family: 'Lora', serif;">
+      <div class="flex items-center mb-6">
+        <!-- Two book icons at the beginning -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          class="mr-2"
+          fill="#000000"
+        >
+          <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h8v2H8V6zm0 4h8v2H8v-2zm0 4h8v2H8v-2z"/>
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          class="mr-3"
+          fill="#000000"
+        >
+          <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h8v2H8V6zm0 4h8v2H8v-2zm0 4h8v2H8v-2z"/>
+        </svg>
+
+        <!-- Title -->
+        <h1
+          class="not-prose text-5xl sm:text-6xl font-bold tracking-tight inline-block border-b-2 border-zinc-800 pb-2"
+          style="background: linear-gradient(to right,rgb(204, 203, 140), #8b5cf6,rgb(121, 159, 221),rgb(80, 173, 142)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+        >
+          My Bookshelf
+        </h1>
+
+        <!-- Two book icons at the end -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          class="ml-3"
+          fill="#000000"
+        >
+          <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h8v2H8V6zm0 4h8v2H8v-2zm0 4h8v2H8v-2z"/>
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          class="ml-2"
+          fill="#000000"
+        >
+          <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h8v2H8V6zm0 4h8v2H8v-2zm0 4h8v2H8v-2z"/>
+        </svg>
+      </div>
+      <blockquote class="mmy-10 pl-6 border-l-4 border-zinc-600 bg-yellow-900/30 rounded-lg py-4">
+        <p class="text-lg italic text-zinc-800">
+          Reading is a way for me to expand my mind, open my eyes, and fill up my heart.
+        </p>
+        <footer class="mt-2 text-sm text-zinc-500">— Oprah Winfrey </footer>
+      </blockquote>
+    </section> 
+    <section id="blogPosts">
+      {
+        years.map((year) => (
+          <div class="mb-10" data-year={year}>
+            <h2 class="text-accent mb-6 text-2xl text-zinc-600 font-mono font-bold">
+              {year}
+            </h2>
+            <ul class="space-y-4" role="list">
+              {postsByYear[year].map((post) => (
+                <li
+                  class="grid gap-2 sm:grid-cols-[auto_1fr]"
+                  data-lang={post.data.lang || "en"}
+                >
+                  <time
+                    datetime={post.data.date.toISOString()}
+                    title={post.data.date.toISOString()}
+                    class="min-w-30 font-semibold font-mono text-zinc-700 pt-1"
+                  >
+                    {format(new Date(post.data.date), "dd MMM y")}
+                  </time>
+                  <div class="text-zinc-900">
+                    {post.data.draft && (
+                      <span class="text-zinc-800 font-bold mr-2">
+                        [Draft]
+                      </span>
+                    )}
+                    <a data-astro-prefetch href={`/reading/${post.id}`}>
+                      {post.data.title}
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+  </Container>
+</Layout>
+
