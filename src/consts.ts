@@ -5,7 +5,7 @@ const PERSONAL_SOCIAL_PROFILES: {
   linkedin?: string;
   spotify?: string;
 } = {
-  github: "https://github.com/RosieNg",
+  github: "https://github.com/RosieHN",
   facebook: "https://www.facebook.com/hong.00003",
   linkedin: "https://www.linkedin.com/in/rosiehn/",
   spotify: "https://open.spotify.com/show/4Pppt42NPK2XzKwNIoW7BR",
@@ -21,4 +21,4 @@ const WEBSITE_CONFIG = {
 export { PERSONAL_SOCIAL_PROFILES as SOCIAL_MEDIA, WEBSITE_CONFIG as SITE };
 
 // GitHub repository URL for blog content source
-export const GITHUB_CONTENT_SOURCE = "https://github.com/RosieHN/My-Blog/tree/master/src/content/blog";
+export const GITHUB_CONTENT_SOURCE = "https://github.com/RosieHN/My_Blog/tree/master/src/content";
