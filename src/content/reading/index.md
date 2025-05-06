@@ -1,11 +1,11 @@
 ---
-title: "Reading1"
-date: "2024-02-24"
+title: "Finding Daily Light: Why The Book of Awakening by Mark Nepo Belongs on Your Shelf"
+date: "2025-05-06"
 description: ""
 lang: "en"
 ---
-“Why am I a dummy?” — No tech skills, no tech degrees, no professional work experience, and English as my second language — I think I’m not a smart person either. But here’s the thing: if I can do it, so can you.
+![AwakeningBook](./Awakening.jpeg)
+If you’re searching for a book that offers daily peace, healing, and inspiration, The Book of Awakening by Mark Nepo is a gentle treasure. Written by a poet and cancer survivor, this book is filled with short, powerful reflections for each day of the year. Every page holds a meaningful story or insight—some drawn from nature, some from Nepo's life—that speaks directly to the soul.
+Whether you're feeling lost, overwhelmed, or simply need a moment of calm in your day, this book can be a guide. It helps you reconnect with yourself, breathe deeply, and find beauty even in difficulty. I’ve found comfort, motivation, and a sense of clarity in these pages—and I return to them often.
+Let it be your daily ritual, your morning coffee companion, or your nightstand healer.
 
-What makes the WiCys scholarship my DREAM scholarship? I recently secured the WiCys Security Training Scholarship, which includes Sans SEC 275, 401, and 504 — some of the most valuable certifications in the field of cybersecurity, totaling a whopping 20,000$ in value. And that’s not all — I also received a conference scholarship in April for an event in US. This scholarship covers everything from a flight ticket to hotel accommodations, ect providing a fantastic opportunity to network with professionals and meet fellow WiCys members. It’s also a chance to connect with organizations that share my passion for cybersecurity.
-
-What are my thoughts on WiCys? I feel grateful for discovering WiCys and becoming a part of the WiCys community. It is a powerful community for empowering women in the field of cybersecurity, like a sisterhood where women are encouraged and supported to pursue success in cybersecurity. Through WiCys, I believe that it opens up new opportunities, allowing me to explore a world of possibilities and discover my true potential in cybersecurity.
